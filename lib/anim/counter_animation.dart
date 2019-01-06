@@ -17,7 +17,13 @@ class _CounterAnimatorState extends State<CounterAnimator>
     _controller =
         AnimationController(duration: const Duration(seconds: 3), vsync: this);
 
-    animation = CurvedAnimation(parent: _controller, curve: Curves.easeIn);
+    //animation = CurvedAnimation(parent: _controller, curve: Curves.easeIn);
+    animation = Tween(begin: 0.0,end: 5.0).animate(_controller)
+    ..addListener((){
+      this.setState((){
+        debugPrint("Animation Tween ${animation.value}");
+      });
+    });
 
     _controller.addListener(() {
       this.setState(() {
@@ -38,7 +44,7 @@ class _CounterAnimatorState extends State<CounterAnimator>
     return GestureDetector(
       child: Text(
         _controller.isAnimating ? (_counter).toStringAsFixed(2) : "Let's begin",
-        style: TextStyle(fontSize: 24.0 * _controller.value + 16.0),
+        style: TextStyle(fontSize: 24.0 * animation.value + 16.0),
       ),
       onTap: () {
         _controller.forward(from: 0.0);
