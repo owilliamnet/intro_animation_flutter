@@ -18,7 +18,17 @@ class _CounterAnimatorState extends State<CounterAnimator>
         AnimationController(duration: const Duration(seconds: 3), vsync: this);
 
     //animation = CurvedAnimation(parent: _controller, curve: Curves.easeIn);
-    animation = Tween(begin: 0.0,end: 5.0).animate(_controller)
+    animation = Tween(begin: 0.0,end: 10.0).animate(_controller)
+    ..addStatusListener((status){
+      if (status == AnimationStatus.completed) {
+        _controller.reverse(from: 5.0);
+      } else if (status == AnimationStatus.reverse) {
+        this.setState((){
+          _counter = _counter - 400;
+          debugPrint("====> Reducing ====> $_counter");
+        });
+      }
+    })
     ..addListener((){
       this.setState((){
         debugPrint("Animation Tween ${animation.value}");
